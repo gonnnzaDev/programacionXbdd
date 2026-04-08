@@ -8,13 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlumnoController {
+
+    //punto1
     public static void add(Alumno a) throws SQLException {
 
-        String consulta = "Insert into alumnos(nombre,apellido,edad,email) values(?,?,?,?)";
+        String consulta = "Insert into alumnos(nombre,apellido,edad,email) " +
+                "values(?,?,?,?)";
 
         try {
 
-            PreparedStatement repo = ConnectionSQL.getInstancia().getConnection().prepareStatement(consulta);
+            PreparedStatement repo = ConnectionSQL.getInstancia()
+                    .getConnection().prepareStatement(consulta);
+
 
             repo.setString(1, a.getNombre());
             repo.setString(2, a.getApellido());
@@ -72,21 +77,20 @@ public class AlumnoController {
     public static List<Alumno> toLIst() {
 
         String consulta = "Select * from alumnos ";
+        List<Alumno> list = new ArrayList<>();
 
         try {
 
             Statement repo = ConnectionSQL.getInstancia().getConnection().createStatement();
             ResultSet rs = repo.executeQuery(consulta);
 
-            List<Alumno> list = new ArrayList<>();
+
             while (rs.next()) {
                 Alumno a = new Alumno(
                         rs.getString("nombre"),
                         rs.getString("apellido"),
                         rs.getString("email"),
                         rs.getInt("edad")
-
-
                 );
                 list.add(a);
 
