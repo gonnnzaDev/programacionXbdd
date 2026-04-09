@@ -33,13 +33,16 @@ public class DireccionController {
     }
 
 
-    public static void remove(Integer id) {
+    public static void remove(int id) {
 
-        String consulta = "Delete from direcciones where id = " + id.toString();
+        String consulta = "Delete from direcciones where id = ? ";
 
 
         try {
             PreparedStatement repo = ConnectionSQL.getInstancia().getConnection().prepareStatement(consulta);
+
+            repo.setInt(id);
+
             repo.execute();
         } catch (SQLException e) {
             System.err.println(e.getMessage());

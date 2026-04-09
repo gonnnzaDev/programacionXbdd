@@ -39,7 +39,7 @@ public class AlumnoController {
     public static int countAlumnos() {
 
         String consulta = "select count(id) from alumnos ";
-        Integer c = null;
+        int c = 0;
 
         try {
 
@@ -59,13 +59,17 @@ public class AlumnoController {
         return c;
     }
 
-    public static void remove(Integer id) {
-        String consulta = "delete from alumnos where id = " + id.toString();
+    public static void remove(int id) {
+        String consulta = "delete from alumnos where id = ?" ;
 
 
         try {
-            Statement repo = ConnectionSQL.getInstancia().getConnection().createStatement();
-            repo.execute(consulta);
+            PreparedStatement repo = ConnectionSQL.getInstancia().getConnection().prepareStatement(consulta);
+
+
+            repo.setInt(1, id);
+
+            repo.execute();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -106,13 +110,16 @@ public class AlumnoController {
     }
 
 
-    public static void updateEdad(Integer edad, Integer id) {
+    public static void updateEdad(int edad, int id) {
 
-        String cons = "update alumnos set edad = " + edad.toString()
-                + " where id = " + id.toString();
+        String cons = "update alumnos set edad = ? where id = ?";
 
         try {
             PreparedStatement repo = ConnectionSQL.getInstancia().getConnection().prepareStatement(cons);
+
+            repo.setInt(1, edad);
+            repo.setInt(2, id);
+
             repo.execute();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
